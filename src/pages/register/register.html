@@ -1,75 +1,64 @@
 <!-- -->
 <ion-header>
-  <ion-navbar color="primary">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title text-center>
-      <strong>Sign up</strong>
-    </ion-title>
+  <ion-navbar color="primary">PasswordSavor
   </ion-navbar>
 </ion-header>
 <!-- -->
 
 <!-- -->
-<ion-content class="auth-page">
-  <ion-card>
-    <ion-card-content>
-      <div class="login-content">
-
-        <!-- Logo -->
-        <div padding text-center>
-          <div class="logo"></div>
-          <h2 ion-text class="text-primary">
-            <strong>Ionic 3</strong> Start Theme
-          </h2>
-        </div>
-
-        <!-- Register form -->
-          <ion-item>
-            <ion-label floating>
-              <ion-icon name="mail" item-start class="text-primary"></ion-icon>
-              Email
-            </ion-label>
-            <ion-input type="email" [(ngModel)]="email" required></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label floating>
-              <ion-icon name="lock" item-start class="text-primary"></ion-icon>
-              Password
-            </ion-label>
-            <ion-input type="password" [(ngModel)]="password" required></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label floating>
-              <ion-icon name="person" item-start class="text-primary"></ion-icon>
-              First Name
-            </ion-label>
-            <ion-input type="text" [(ngModel)]="firstname" ></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label floating>
-              <ion-icon name="person" item-start class="text-primary"></ion-icon>
-              Last Name
-            </ion-label>
-            <ion-input type="text" [(ngModel)]="lastname"></ion-input>
-          </ion-item>
-
-        <div margin-top>
-          <button ion-button block color="primary" tappable (click)="register()">
-            SIGN UP
-          </button>
-        </div>
-
-        <!-- Other links -->
-        <div text-center margin-top>
-          <span ion-text color="primary" tappable (click)="login()">I have an account</span>
-        </div>
-
+<ion-content class="auth-page" overflow-scroll="true">
+      <!-- Logo -->
+      <div text-center>
+        <ion-img text-center src="assets/img/initi-logo-v2.png" width="110" height="100"></ion-img>
       </div>
-    </ion-card-content>
-  </ion-card>
+        <ion-card>
+          <ion-card-content>
+            <div class="login-content">
+              <div padding-horizontal>
+                    <h2 class="title" text-center>Sign up</h2>
+                </div>
+
+              <!-- Register form -->
+                <ion-item>
+                  <ion-label >
+                    <ion-icon name="mail" item-start class="text-primary"></ion-icon>
+                  </ion-label>
+                  <ion-input type="email" [(ngModel)]="email" placeholder="your@example.com"required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label >
+                    <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+                  </ion-label>
+                  <ion-input type="password" [(ngModel)]="password" placeholder="12345678" required></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label >
+                    <ion-icon name="person" item-start class="text-primary"></ion-icon>
+                  </ion-label>
+                  <ion-input type="text" [(ngModel)]="firstname" placeholder="John" ></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label >
+                    <ion-icon name="person" item-start class="text-primary"></ion-icon>
+                  </ion-label>
+                  <ion-input type="text" [(ngModel)]="lastname" placeholder="Smith"> </ion-input>
+                </ion-item>
+
+              <div margin-top>
+                <button ion-button block color="primary" tappable (click)="register()">
+                  SIGN UP
+                </button>
+              </div>
+
+              <!-- Other links -->
+              <div text-center margin-top>
+                <span ion-text color="primary" tappable (click)="login()">I have an account</span>
+              </div>
+
+            </div>
+          </ion-card-content>
+        </ion-card>
 </ion-content>

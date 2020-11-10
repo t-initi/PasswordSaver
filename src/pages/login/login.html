@@ -1,84 +1,47 @@
-<!-- -->
 <ion-header>
-  <ion-navbar color="primary">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-  </ion-navbar>
+    <ion-toolbar color="primary">
+    <ion-title>PasswordSaver</ion-title>
+    </ion-toolbar>
 </ion-header>
-<!-- -->
+
 <ion-content class="animated fadeIn login auth-page">
-
-  <ion-card>
-    <ion-card-content>
-    <div class="login-content">
-
-      <!-- Logo -->
-      <div padding-horizontal text-center class="animated fadeInDown">
-        <div class="logo">
-          <!--ion-img src="passsaverlog3.png"></ion-img-->
-          <h1>Connexion</h1>
-        </div>
-      </div>
-
-      <!-- Login form -->
-      <!--form class="list-form"-->
-        <ion-item>
-          <ion-label stacked>
-            <ion-icon name="mail" item-start class="text-primary"></ion-icon>
-            Email
-          </ion-label>
-          <ion-input type="email" [(ngModel)]="email"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label stacked>
-            <ion-icon name="lock" item-start class="text-primary"></ion-icon>
-            Password
-          </ion-label>
-          <ion-input type="password" name="password" [(ngModel)]="password"></ion-input>
-        </ion-item>
-      <!--/form-->
-
-      <p text-right ion-text color="secondary" tappable (click)="forgotPass()"><strong>Forgot Password?</strong></p>
-
-      <div class="connexion-buttons-container">
-        <button ion-button icon-start block tappable (click)="login()">
-          <ion-icon name="log-in"></ion-icon> LOG IN </button>
-        <button ion-button icon-start block tappable (click)="signup()">
-          <ion-icon name="log-in"></ion-icon> SIGN UP </button>
-
-        <!--p text-center ion-text color="secondary">Or Sign in with:</p>
-
-        <ion-grid>
-          <ion-row>
-            <ion-col col-4>
-              <button ion-button icon-only block class="btn-facebook">
-                <ion-icon name="logo-facebook"></ion-icon>
-              </button>
-            </ion-col>
-            <ion-col col-4>
-              <button ion-button icon-only block class="btn-twitter">
-                <ion-icon name="logo-twitter"></ion-icon>
-              </button>
-            </ion-col>
-            <ion-col col-4>
-              <button ion-button icon-only block class="btn-gplus">
-                <ion-icon name="logo-googleplus"></ion-icon>
-              </button>
-            </ion-col>
-          </ion-row>
-        </ion-grid-->
-
-      </div>
-
-
-      <!-- Other links -->
-      <div text-center margin-top>
-        <span ion-text color="secondary" tappable (click)="register()">New here? <strong>Sign up</strong></span>
-      </div>
-
+    <div text-center class="logo-container">
+        <ion-img text-center src="assets/img/initi-logo-v2.png" width="110" height="100"></ion-img>
     </div>
-  </ion-card-content>
-</ion-card>
+
+    <ion-card>
+        <ion-card-content>
+            <div class="login-content">
+                <div padding-horizontal>
+                    <h2 class="title" text-center>Connexion</h2>
+                </div>
+
+                <div text-center margin-top>
+                    <span ion-text color="danger">{{errorMsg}}</span>
+                </div>
+
+                <ion-item>
+                    <ion-label stacked >
+                        <ion-icon name="mail" item-start class="text-primary"></ion-icon>Email</ion-label>
+                    <ion-input type="email" [(ngModel)]="email"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label stacked>
+                        <ion-icon name="lock" item-start class="text-primary"></ion-icon>Password</ion-label>
+                    <ion-input type="password" name="password" [(ngModel)]="password"></ion-input>
+                </ion-item>
+
+                <div class="connexion-buttons-container">
+                    <button ion-button block tappable (click)="login()">LOG IN</button>
+                    <button ion-button block tappable (click)="signup()">SIGN UP</button>
+                </div>
+                <div text-center margin-top>
+                    <span ion-text color="primary" class="forgotPassBtn" tappable (click)="forgotPass()">Forgot Password?</span>
+                </div>
+            </div>
+
+        </ion-card-content>
+    </ion-card>
+
 </ion-content>

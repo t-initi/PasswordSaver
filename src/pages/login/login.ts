@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {IonicPage, NavController, AlertController, ToastController, MenuController} from "ionic-angular";
+import {IonicPage, NavController, AlertController, ToastController, MenuController, LoadingController, Loading} from "ionic-angular";
 import {HomePage} from "../home/home";
 import {RegisterPage} from "../register/register";
 import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
@@ -13,12 +13,18 @@ import {Storage} from '@ionic/storage';
 export class LoginPage {
   public email : string = "tiescoboss@inity.com";
   public password : string = "1234567";
+  public loading : Loading;
+  errorMsg: string;
 
-  constructor(public nav: NavController, public forgotCtrl: AlertController, 
+  constructor(
+    public nav: NavController, 
+    public forgotCtrl: AlertController, 
     public menu: MenuController, 
     public toastCtrl: ToastController,
     public authservice: AuthServiceProvider,
-    private storage: Storage) {
+    private storage: Storage,
+    public loadingCtrl: LoadingController
+    ){
     this.menu.swipeEnable(false);
   }
 
@@ -29,20 +35,38 @@ export class LoginPage {
 
   // login and go to home page
   login() {
-
+    this.presentLoginLoader();
     if(this.email && this.password){
-      this.authservice.postLogin({"email" : this.email, "password" : this.password}).then((resolve) => {
-        let result : any = resolve;
-        let data : any = result.json();
-        this.storage.set("userId", data.id);
-        this.nav.setRoot(HomePage, {
-          'userId' : data.id
-        });
-      }, (error) => {
+      this.authservice.postLogin({"email" : this.email, "password" : this.password}).then((result) => { 
+        let token = result.json().token;
 
+        window.localStorage.setItem('token', token);
+        this.dismissLoginLoader();
+        this.nav.push(HomePage);
+        
+      }, (error) => {
+        
+        this.dismissLoginLoader();
+        console.log(error);
+        this.errorMsg = error.json().message;
+        
       });
       
     }
+  }
+  
+
+  presentLoginLoader()
+  {
+    this.loading = this.loadingCtrl.create({
+      content : 'Please wait ...'
+    })
+    this.loading.present();
+  }
+
+  dismissLoginLoader()
+  {
+    this.loading.dismiss();
   }
 
   signup() {

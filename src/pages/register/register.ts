@@ -25,16 +25,20 @@ export class RegisterPage {
       this.authservice.postSignup({"email" : this.email, "password" : this.password, "firstname" : this.firstname, "lastname" : this.lastname}).then((resolve) => {
         let result : any = resolve;
         let data : any = result.json();
-        this.nav.setRoot(HomePage, {
-          'userId' : data.id
-        });
+        
+        //TODO return user_id
+        let userId : string = "1";
+        let token = data.token;
+        window.localStorage.setItem('token', token);
+        window.localStorage.setItem('userId', userId);
+
+        this.nav.setRoot(HomePage);
       }, (error) => {
 
       });
       
     }
 
-    
 
     this.nav.setRoot(HomePage);
   }

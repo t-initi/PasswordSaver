@@ -1,23 +1,20 @@
-import { HttpClient } from '@angular/common/http';
+//import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Http, Headers, RequestOptions } from '@angular/http';
+//import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { AlertController, LoadingController, Loading } from 'ionic-angular';
 
-
-
-let loginUrl = 'http://127.0.0.1:8000/api/login';
-let signupUrl = 'http://127.0.0.1:8000/api/signup';
-let apiUrl = 'http://127.0.0.1:8000/api';
+//let apiUrl = 'http://localhost:8000/api';
+let apiUrl = 'https://initi-tech.com/api';
 
 @Injectable()
 export class AuthServiceProvider {
   public loading : Loading;
 
   constructor(public http: Http, public alertCtrl : AlertController, public loadingCtrl: LoadingController) {
-    console.log('Hello AuthServiceProvider Provider');
+  
   }
 
   /*showAlert() {
@@ -42,34 +39,44 @@ export class AuthServiceProvider {
   }
 
   postLogin(credentials){
+    
   	return new Promise((resolve, reject) => {
-  		let headers = new Headers({ 'Content-Type': 'application/json', "Access-Control-Allow-Origin" : "*" });
-  		let postData = new FormData();
-  		postData.append("email", credentials.email);
-  		postData.append("password", credentials.password);
+      let headers = new Headers();  
+      headers.append('Content-Type', 'application/json');
+      const requestOptions = new RequestOptions({ headers: headers });
 
-  		this.http.post(apiUrl+'/login', postData).subscribe(res => {
-        this.presentLoadingDefault();
-  			resolve(res);
+      let postData = { "username": credentials.email, "password": credentials.password};
+
+      console.log("POSTED = "+postData);
+      
+      this.http.post(apiUrl+'/login', postData, requestOptions).subscribe(res => {
+        this.presentLoadingDefault(); 
+        resolve(res);
   		}, (err) => {
   			reject(err);
   		}, () => {
         this.dismissLoading();
       });
-
   	});
   }
 
   postSignup(credentials) {
     return new Promise((resolve, reject) => {
-      let headers = new Headers({ 'Content-Type': 'application/json', "Access-Control-Allow-Origin" : "*" });
-      let postData = new FormData();
-      postData.append("email", credentials.email);
-      postData.append("password", credentials.password);
-      postData.append("firstname", credentials.firstname);
-      postData.append("lastname", credentials.lastname);
+      let headers = new Headers();
+      
+      headers.append('Content-Type', 'application/json');
+      const requestOptions = new RequestOptions({ headers: headers });
 
-      this.http.post(apiUrl+'/signup', postData).subscribe(res => {
+      let postData = {
+        "email" : credentials.email,
+        "username" : credentials.email,
+        "password": credentials.password,
+        "firstname": credentials.firstname,
+        "lastname": credentials.lastname
+      };
+      
+
+      this.http.post(apiUrl+'/signup', postData, requestOptions).subscribe(res => {
         resolve(res);
       }, (err) => {
         reject(err);
@@ -79,16 +86,21 @@ export class AuthServiceProvider {
 
   }
 
-  postAddPassword(credentials){
+  postAddPassword(credentials, token){
     return new Promise((resolve, reject) => {
-      let headers = new Headers({ 'Content-Type': 'application/json', "Access-Control-Allow-Origin" : "*" });
-      let postData = new FormData();
-      postData.append("idUser", credentials.idUser);
-      postData.append("siteName", credentials.siteName);
-      postData.append("sitePass", credentials.sitePass);
-      postData.append("description", credentials.description);
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Authorization', "Bearer " + token);
 
-      this.http.post(apiUrl+'/password/add', postData).subscribe(res => {
+      const requestOptions = new RequestOptions({ headers: headers });
+  
+      let postData = {
+        "siteName": credentials.siteName,
+        "sitePass": credentials.sitePass,
+        "description": credentials.description
+      };
+
+      this.http.post(apiUrl+'/password/add', postData, requestOptions).subscribe(res => {
           resolve(res);
         }, (err) => {
           reject(err);
@@ -96,12 +108,39 @@ export class AuthServiceProvider {
     });
   }
 
-  postDeletePassword(idUser, idPassword){
+  postEditPassword(passwordId, credentials, token){
+    return new Promise((resolve, reject) => {
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Authorization', "Bearer " + token);
+
+      const requestOptions = new RequestOptions({ headers: headers });
+
+      let postData = {
+        "siteName": credentials.siteName,
+        "sitePass": credentials.sitePass,
+        "description": credentials.description
+      };
+
+      
+      this.http.post(apiUrl + '/password/edit/' + passwordId , postData, requestOptions).subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  postDeletePassword(idPassword, token){
 
     return new Promise((resolve, reject) => {
-      let headers = new Headers({ 'Content-Type': 'application/json', "Access-Control-Allow-Origin" : "*" });
+      let headers = new Headers();
+      
+      headers.append('Content-Type', 'application/json');
+      headers.append('Authorization', "Bearer " + token);
+      const requestOptions = new RequestOptions({ headers: headers });
 
-      this.http.post(apiUrl+'/password/delete/'+idUser+'/'+idPassword, null).subscribe(res => {
+      this.http.post(apiUrl+'/password/delete/'+idPassword, {}, requestOptions).subscribe(res => {
           resolve(res);
         }, (err) => {
           reject(err);
@@ -110,31 +149,19 @@ export class AuthServiceProvider {
 
   }
 
-  postEditPassword(credentials){
-    return new Promise((resolve, reject) => {
-      let headers = new Headers({ 'Content-Type': 'application/json', "Access-Control-Allow-Origin" : "*" });
-      let postData = new FormData();
-      postData.append("idUser", credentials.idUser);
-      postData.append("siteName", credentials.siteName);
-      postData.append("sitePass", credentials.sitePass);
-      postData.append("idPassword", credentials.sitePass);
-      postData.append("description", credentials.description);
-
-      this.http.post(apiUrl+'/password/edit', postData).subscribe(res => {
-          resolve(res);
-        }, (err) => {
-          reject(err);
-        });
-    });
-  }
+  
 
 
-  postLoadPasswords(idUser){
+  postLoadPasswords(token){
 
       return new Promise((resolve, reject) => {
-        let postData = new FormData();
+        let headers = new Headers();
 
-        this.http.post(apiUrl+'/passwords/'+idUser, postData).subscribe(data => {
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', "Bearer " + token);
+        const requestOptions = new RequestOptions({ headers: headers });
+
+        this.http.get(apiUrl+'/passwords/', requestOptions).subscribe(data => {
         console.log(data)   
           resolve(data) ;
           
@@ -147,13 +174,15 @@ export class AuthServiceProvider {
       });
     }
 
-    postLoadPassword(idUser, idPassword){
+    postLoadPassword(idPassword, token){
     return new Promise((resolve, reject) => {
-      let postData = new FormData();
-      postData.append("idUser", idUser);
-      postData.append("idPassword", idPassword);
+      let headers = new Headers();
 
-      this.http.post(apiUrl+'/password',postData).subscribe(data => {
+      headers.append('Content-Type', 'application/json');
+      headers.append('Authorization', "Bearer " + token);
+      const requestOptions = new RequestOptions({ headers: headers });
+
+      this.http.get(apiUrl+'/password/' + idPassword, requestOptions).subscribe(data => {
         console.log('my data: ', data);
         resolve(data) ;
       }, error => {

@@ -1,13 +1,13 @@
-page-login,
-.login {
-	ion-card-content{
-
-		.login-content{
-			.connexion-buttons-container{
-				margin-top: 25px;
-			}
-
-		}
-	}
-	
+ion-content {
+    ion-card {
+        ion-card-content {
+            .login-content {
+                .title {
+                    font-weight: 700;
+                }
+            
+        
+            }
+        }
+    }
 }

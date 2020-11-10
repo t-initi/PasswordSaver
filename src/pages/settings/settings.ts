@@ -14,6 +14,7 @@ export class SettingsPage {
 
   // logout
   logout() {
-    this.nav.setRoot(LoginPage);
+    window.localStorage.clear();
+    this.nav.push(LoginPage);
   }
 }

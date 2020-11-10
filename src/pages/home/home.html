@@ -4,33 +4,29 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title text-center>
-      <strong>Passwords</strong>
-    </ion-title>
+    
     <ion-buttons end>
       <button ion-button tappable icon-only (click)="goToAddPassword()" >
           <ion-icon name="add"></ion-icon>
-      </button>
-      <button ion-button tappable (click)="presentNotifications($event)">
-        <ion-icon name="notifications"></ion-icon>
-      </button>
-      <button ion-button tappable (click)="goToAccount()">
-        <ion-icon name="cog"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content class="animated fadeIn common-bg">
-      <div padding-horizontal text-center class="animated fadeInDown">
-        <ion-card  margin-bottom class="full-width" *ngFor="let pass of user.passwords">
-            <button ion-item class="full-width" (click)="getPasswordById(pass?.id)">
-              <ion-icon name="lock" item-left ></ion-icon>
-              <div item-center>{{ pass.site_name }}</div>
-              <div item-right><ion-icon name="arrow-dropright"></ion-icon></div>
-            </button>
-        </ion-card>
-      </div>
+<ion-content class="animated fadeIn common-bg" overflow-scroll="true"> 
+  <div class="bar bar-header bar-light">
+    <h4 class="title" text-center>My Passwords</h4>
+  </div>
+      
+  <div text-center class="animated fadeInDown">
+    <ion-card  margin-bottom class="full-width" *ngFor="let pass of user.passwords">
+        <button ion-item class="full-width" (click)="getPasswordById(pass?.id)">
+          <ion-icon name="lock" item-left ></ion-icon>
+          <div item-center>{{ pass.site_name }}</div>
+          <div item-right><ion-icon name="arrow-dropright"></ion-icon></div>
+        </button>
+    </ion-card>
+  </div>
 
       
     
@@ -53,3 +49,5 @@
   </ion-item-group-->
 
 </ion-content>
+
+

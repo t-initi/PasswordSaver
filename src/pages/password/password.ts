@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { HttpClient } from '@angular/common/http';
 import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import { HomePage} from '../home/home';
+import { EditPasswordPage} from '../edit-password/edit-password';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
@@ -16,14 +15,16 @@ import 'rxjs/add/operator/map';
 export class PasswordPage {
 	passwordDetails: any;
 	idPassword : any;
-	userId: any;
+  userId: any;
+  token : any;
   showPassword : boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,  public http: Http, public serviceProvider : AuthServiceProvider ) {
   	this.idPassword = navParams.get('id');
-  	this.userId = navParams.get('userId');
+    this.userId = window.localStorage.getItem('userId');
+    this.token = window.localStorage.getItem('token');
 
-  	serviceProvider.postLoadPassword(this.userId, this.idPassword).then((result) => {
+  	serviceProvider.postLoadPassword(this.idPassword, this.token).then((result) => {
   		let data : any = result;
   		this.passwordDetails = data.json();
   	});
@@ -31,26 +32,30 @@ export class PasswordPage {
 
   ionViewWillEnter() {
     this.idPassword = this.navParams.get('id');
-    this.userId = this.navParams.get('userId');
-
-    this.serviceProvider.postLoadPassword(this.userId, this.idPassword).then((result) => {
+    this.serviceProvider.postLoadPassword(this.idPassword, this.token).then((result) => {
       let data : any = result;
       this.passwordDetails = data.json();
     });
   }
 
   delete(): void {
-  	this.serviceProvider.postDeletePassword(this.userId, this.idPassword).then((result) => {
+  	this.serviceProvider.postDeletePassword(this.idPassword, this.token).then((result) => {
   		console.log('res', result);
 
       // Return to home page
-      this.navCtrl.setRoot(HomePage, {
-        'userId' : this.userId
-      });
+      this.navCtrl.setRoot(HomePage);
   	}, (error) => {
   		console.log('err', error);
   	});
   	
+  }
+
+  edit(): void{
+
+  }
+
+  getToEditPasswordPage(): void{
+    this.navCtrl.push(EditPasswordPage, {'id' : this.idPassword });
   }
 
   revealPassword(){
